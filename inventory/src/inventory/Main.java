@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusListener;
 import java.awt.event.FocusEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,6 +14,55 @@ public class Main {
         panel.setBounds(0, 0, 1200, 90); 
         panel.setBackground(Color.LIGHT_GRAY); 
         panel.setLayout(null);
+        
+        JPanel main = new JPanel();
+        main.setBounds(280,90,920,200);
+        main.setBackground(Color.decode("#afafaf"));
+        main.setLayout(null);
+        main.setVisible(false);
+        
+        JPanel main1 = new JPanel();
+        main1.setBounds(280,290,460,470);
+        main1.setBackground(Color.decode("#a8a8a8"));
+        main1.setVisible(false);
+        
+        JPanel main2 = new JPanel();
+        main2.setBounds(725,290,460,470);
+        main2.setBackground(Color.decode("#858585"));
+        main2.setVisible(false);
+        
+        JPanel View = new JPanel();
+        View.setBounds(280,90,920,670);
+        View.setBackground(Color.decode("#858585"));
+        View.setVisible(false);
+        View.setLayout(null);
+        
+        JLabel vitems = new JLabel("ITEMS");
+        vitems.setBounds(30, 50, 100, 100); 
+        vitems.setFont(new Font("Arial", Font.BOLD, 24)); 
+        
+        View.add(vitems);
+        
+        JPanel Peripheral = new JPanel();
+        Peripheral.setBounds(280,90,920,670);
+        Peripheral.setBackground(Color.decode("#dbdbdb"));
+        Peripheral.setVisible(false);
+        
+        JPanel Maintenance = new JPanel();
+        Maintenance.setBounds(280,90,920,670);
+        Maintenance.setBackground(Color.decode("#bfbfbf"));
+        Maintenance.setVisible(false);
+        
+        JPanel Manage = new JPanel();
+        Manage.setBounds(280,90,920,670);
+        Manage.setBackground(Color.decode("#929292"));
+        Manage.setVisible(false);
+        
+        JPanel Logout = new JPanel();
+        Logout.setBounds(280,90,920,670);
+        Logout.setBackground(Color.decode("#737373"));
+        Logout.setVisible(false);
+        
         
         ImageIcon imageIcon = new ImageIcon(Main.class.getResource("olfu.png"));
         Image image = imageIcon.getImage(); 
@@ -51,6 +102,7 @@ public class Main {
         button1.setOpaque(true);
         
         button1.addFocusListener(new FocusListener() {
+        	
             @Override
             public void focusGained(FocusEvent e) {
                 button1.setBackground(Color.decode("#bababa")); 
@@ -61,14 +113,24 @@ public class Main {
                 button1.setBackground(Color.decode("#e3e3e3")); 
             }
         });
+        
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+              main.setVisible(true);
+              main1.setVisible(true);
+              main2.setVisible(true);
+            }
+        });
+
         nav.add(button1);
         
         ImageIcon buttonIcon1 = new ImageIcon(Main.class.getResource("all.png"));
         Image buttonImage1 = buttonIcon1.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
         ImageIcon resizedButtonIcon1 = new ImageIcon(buttonImage1);
         
-        JButton button2 = new JButton("All Items", resizedButtonIcon1 );
-        button2.setFont(new Font("Arial", Font.BOLD, 24));
+        JButton button2 = new JButton("View and Manage Inventory", resizedButtonIcon1 );
+        button2.setFont(new Font("Arial", Font.BOLD, 14));
         button2.setBounds(0, 240, 280, 40);
         button2.setHorizontalAlignment(SwingConstants.LEFT);
         button2.setIconTextGap(20);
@@ -88,118 +150,27 @@ public class Main {
                 button2.setBackground(Color.decode("#e3e3e3"));
             }
         });
-        
+        button2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	main.setVisible(false);
+                main1.setVisible(false);
+                main2.setVisible(false);
+             View.setVisible(true);
+             
+            }
+        });
         nav.add(button2);
         
-        JLabel view = new JLabel("View and Manage Inventory");
-        view.setFont(new Font("Arial", Font.BOLD, 18));
-        view.setBounds(20, 280, 280, 40);
-        nav.add(view);
-        
-        JButton button3 = new JButton("View Inventory");
-        button3.setFont(new Font("Arial", Font.PLAIN, 16));
-        button3.setBounds(0, 310, 280, 30);
-        button3.setMargin(new Insets(5, 65, 5, 20)); 
-        button3.setHorizontalAlignment(SwingConstants.LEFT);
-        button3.setIconTextGap(20);
-        button3.setBackground(Color.decode("#e3e3e3"));
-        button3.setFocusPainted(false); 
-        button3.setBorderPainted(false); 
-        button3.setOpaque(true);
-        
-        button3.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                button3.setBackground(Color.decode("#bababa"));
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                button3.setBackground(Color.decode("#e3e3e3")); 
-            }
-        });
-        
-        nav.add(button3);
-        
-        JButton button4 = new JButton("Add New Item");
-        button4.setFont(new Font("Arial", Font.PLAIN, 16));
-        button4.setBounds(0, 340, 280, 30);
-        button4.setMargin(new Insets(5, 65, 5, 20)); 
-        button4.setHorizontalAlignment(SwingConstants.LEFT);
-        button4.setIconTextGap(20);
-        button4.setBackground(Color.decode("#e3e3e3"));
-        button4.setFocusPainted(false); 
-        button4.setBorderPainted(false); 
-        button4.setOpaque(true);
-        
-        button4.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                button4.setBackground(Color.decode("#bababa")); 
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                button4.setBackground(Color.decode("#e3e3e3"));
-            }
-        });
-        
-        nav.add(button4);
-        
-        JButton button5 = new JButton("Update Item Status");
-        button5.setFont(new Font("Arial", Font.PLAIN, 16));
-        button5.setBounds(0, 370, 280, 30);
-        button5.setMargin(new Insets(5, 65, 5, 20)); 
-        button5.setHorizontalAlignment(SwingConstants.LEFT);
-        button5.setIconTextGap(20);
-        button5.setBackground(Color.decode("#e3e3e3"));
-        button5.setFocusPainted(false);
-        button5.setBorderPainted(false);
-        button5.setOpaque(true);
-        button5.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                button5.setBackground(Color.decode("#bababa"));
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                button5.setBackground(Color.decode("#e3e3e3"));
-            }
-        });
-        nav.add(button5);
-
-        JButton button6 = new JButton("Check Availability Status");
-        button6.setFont(new Font("Arial", Font.PLAIN, 16));
-        button6.setBounds(0, 400, 280, 30);
-        button6.setMargin(new Insets(5, 65, 5, 20)); 
-        button6.setHorizontalAlignment(SwingConstants.LEFT);
-        button6.setIconTextGap(20);
-        button6.setBackground(Color.decode("#e3e3e3"));
-        button6.setFocusPainted(false);
-        button6.setBorderPainted(false);
-        button6.setOpaque(true);
-        button6.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                button6.setBackground(Color.decode("#bababa"));
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                button6.setBackground(Color.decode("#e3e3e3"));
-            }
-        });
-        nav.add(button6);
         
         JLabel reports = new JLabel("Reports and Issues");
         reports.setFont(new Font("Arial", Font.BOLD, 18));
-        reports.setBounds(20, 430, 280, 40);
+        reports.setBounds(20, 280, 280, 40);
         nav.add(reports);
 
         JButton button7 = new JButton("Pheripheral Borrowing Records");
         button7.setFont(new Font("Arial", Font.PLAIN, 16));
-        button7.setBounds(0, 460, 280, 30);
+        button7.setBounds(0, 310, 280, 30);
         button7.setMargin(new Insets(5, 65, 5, 20)); 
         button7.setHorizontalAlignment(SwingConstants.LEFT);
         button7.setIconTextGap(20);
@@ -218,11 +189,21 @@ public class Main {
                 button7.setBackground(Color.decode("#e3e3e3"));
             }
         });
+        button7.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	main.setVisible(false);
+                main1.setVisible(false);
+                main2.setVisible(false);
+             View.setVisible(false);
+             Peripheral.setVisible(true);
+            }
+        });
         nav.add(button7);
 
         JButton button8 = new JButton("Maintenance Records");
         button8.setFont(new Font("Arial", Font.PLAIN, 16));
-        button8.setBounds(0, 490, 280, 30);
+        button8.setBounds(0, 340, 280, 30);
         button8.setMargin(new Insets(5, 65, 5, 20)); 
         button8.setHorizontalAlignment(SwingConstants.LEFT);
         button8.setIconTextGap(20);
@@ -241,16 +222,27 @@ public class Main {
                 button8.setBackground(Color.decode("#e3e3e3"));
             }
         });
+        button8.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	main.setVisible(false);
+                main1.setVisible(false);
+                main2.setVisible(false);
+             View.setVisible(false);
+             Peripheral.setVisible(false);
+             Maintenance.setVisible(true);
+            }
+        });
         nav.add(button8);
 
         JLabel account = new JLabel("Account Settings");
         account.setFont(new Font("Arial", Font.BOLD, 18));
-        account.setBounds(20, 520, 280, 40);
+        account.setBounds(20, 370, 280, 40);
         nav.add( account);
         
         JButton button9 = new JButton("Manage Admin Accounts");
         button9.setFont(new Font("Arial", Font.PLAIN, 16));
-        button9.setBounds(0, 550, 280, 30);
+        button9.setBounds(0, 400, 280, 30);
         button9.setMargin(new Insets(5, 65, 5, 20)); 
         button9.setHorizontalAlignment(SwingConstants.LEFT);
         button9.setIconTextGap(20);
@@ -269,11 +261,23 @@ public class Main {
                 button9.setBackground(Color.decode("#e3e3e3"));
             }
         });
+        button9.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	main.setVisible(false);
+                main1.setVisible(false);
+                main2.setVisible(false);
+             View.setVisible(false);
+             Peripheral.setVisible(false);
+             Maintenance.setVisible(false);
+             Manage.setVisible(true);
+            }
+        });
         nav.add(button9);
 
         JButton button10 = new JButton("Log Out");
         button10.setFont(new Font("Arial", Font.PLAIN, 16));
-        button10.setBounds(0, 580, 280, 30);
+        button10.setBounds(0, 430, 280, 30);
         button10.setMargin(new Insets(5, 65, 5, 20)); 
         button10.setHorizontalAlignment(SwingConstants.LEFT);
         button10.setIconTextGap(20);
@@ -292,12 +296,22 @@ public class Main {
                 button10.setBackground(Color.decode("#e3e3e3"));
             }
         });
+        
+        button10.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	main.setVisible(false);
+                main1.setVisible(false);
+                main2.setVisible(false);
+             View.setVisible(false);
+             Peripheral.setVisible(false);
+             Maintenance.setVisible(false);
+             Manage.setVisible(false);
+             Logout.setVisible(true);
+            }
+        });
         nav.add(button10);
         
-        JPanel main = new JPanel();
-        main.setBounds(280,90,920,200);
-        main.setBackground(Color.decode("#afafaf"));
-        main.setLayout(null);
         
         ImageIcon allitems = new ImageIcon(Main.class.getResource("all.png"));
         Image items = allitems.getImage().getScaledInstance(50, 50, Image.SCALE_SMOOTH);
@@ -330,14 +344,6 @@ public class Main {
         
         main.add(admin);
         
-        JPanel main1 = new JPanel();
-        main1.setBounds(280,290,460,470);
-        main1.setBackground(Color.decode("#a8a8a8"));
-        
-        JPanel main2 = new JPanel();
-        main2.setBounds(725,290,460,470);
-        main2.setBackground(Color.decode("#858585"));
-        
         JFrame frame = new JFrame("Admin");
         frame.setSize(1200, 800);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -351,6 +357,11 @@ public class Main {
         frame.add(main);
         frame.add(main1);
         frame.add(main2);
+        frame.add(View);
+        frame.add(Peripheral);
+        frame.add(Maintenance);
+        frame.add(Manage);
+        frame.add(Logout);
         frame.add(nav);
         
         frame.setVisible(true);
