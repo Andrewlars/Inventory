@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import inventory.conn;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 
 import java.util.ArrayList;
@@ -322,6 +323,8 @@ public class Main {
         borrow.setBounds(280,90,920,670);
         borrow.setBackground(Color.decode("#ffffff"));
         borrow.setVisible(false);
+        borrow.revalidate();   
+        borrow.repaint();
         borrow.setLayout(null);
         
         JLabel bbrecords = new JLabel("Borrowing Records");
@@ -382,15 +385,143 @@ public class Main {
         bdaterange.add(blprev);
         bdaterange.add(brnext);
         
+        JLabel bbdate = new JLabel("Date", SwingConstants.CENTER);
+        bbdate.setBounds(50, 150, 130, 50);
+        bbdate.setFont(new Font("Arial", Font.BOLD, 12));
+        
+        JLabel biname = new JLabel("Item Name", SwingConstants.CENTER);
+        biname.setBounds(180, 150, 130, 50);
+        biname.setFont(new Font("Date", Font.BOLD, 12));
+        
+        JLabel bid = new JLabel("Item ID", SwingConstants.CENTER);
+        bid.setBounds(280, 150, 130, 50);
+        bid.setFont(new Font("Arial", Font.BOLD, 12));
+        
+        JLabel bsname = new JLabel("Student Name", SwingConstants.CENTER);
+        bsname.setBounds(390, 150, 130, 50);
+        bsname.setFont(new Font("Arial", Font.BOLD, 12));
+        
+        JLabel bsemail = new JLabel("Student Email", SwingConstants.CENTER);
+        bsemail.setBounds(550, 150, 130, 50);
+        bsemail.setFont(new Font("Arial", Font.BOLD, 12));
+        
+        JLabel broom = new JLabel("Room Assignment", SwingConstants.CENTER);
+        broom.setBounds(735, 150, 130, 50);
+        broom.setFont(new Font("Arial", Font.BOLD, 12));
+        
         borrow.add(bbrecords);
         borrow.add(bdaterange);
+        borrow.add(bbdate);
+        borrow.add(biname);
+        borrow.add(bid);
+        borrow.add(bsname);
+        borrow.add(bsemail);
+        borrow.add(broom);
         
+        Runnable fetchData = () -> {
+            storedDateRange[0] = dateRange[0].format(formatter) + " - " + dateRange[1].format(formatter);
+            
+            String startDate = dateRange[0].format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String endDate = dateRange[1].format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            String query = "SELECT b.borrowID, b.date, b.itemID, i.itemName, " +
+                    "b.studentName, b.studentEmail, b.roomAssignment " +
+                    "FROM borrow b " +
+                    "JOIN items i ON b.itemID = i.itemID " +
+                    "WHERE b.date BETWEEN '" + startDate + "' AND '" + endDate + "'";
+  
+            for (JLabel label : dynamicLabels) {
+                borrow.remove(label);
+            }
+            dynamicLabels.clear();
+            
+            try (Connection conn = inventory.conn.connect();
+                 Statement stmt = conn.createStatement();
+                 ResultSet rs = stmt.executeQuery(query)) {
+            	
+            	int y = 200;
+                int x = 30;
+
+                while (rs.next()) {
+                    String date = rs.getString("date");
+                    String itemName = rs.getString("itemName");
+                    int itemID = rs.getInt("itemID");
+                    String studentName = rs.getString("studentName");
+                    String studentEmail = rs.getString("studentEmail");
+                    String roomAssignment = rs.getString("roomAssignment");
+ 
+                    LocalDate sqlDate = LocalDate.parse(date);  
+                    DateTimeFormatter displayFormat = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+                    String formattedDate = sqlDate.format(displayFormat);
+                    JLabel label1 = new JLabel(formattedDate, SwingConstants.CENTER);
+                    label1.setBounds(x, y, 130, 50);
+                    label1.setFont(new Font("Arial", Font.PLAIN, 12));
+                    
+                    x += 150;
+                    
+                    JLabel label6 = new JLabel(itemName, SwingConstants.CENTER);
+                    label6.setBounds(x, y, 130, 50);
+                    label6.setFont(new Font("Arial", Font.PLAIN, 12));
+                    
+                    x += 100;
+                    
+                    JLabel label2 = new JLabel(String.valueOf(itemID), SwingConstants.CENTER);
+                    label2.setBounds(x, y, 130, 50);
+                    label2.setFont(new Font("Arial", Font.PLAIN, 12));
+                    
+                    x += 110;
+                    
+                    JLabel label3 = new JLabel(studentName, SwingConstants.CENTER);
+                    label3.setBounds(x, y, 130, 50);
+                    label3.setFont(new Font("Arial", Font.PLAIN, 12));
+                    
+                    x += 150;
+                    
+                    JLabel label4 = new JLabel(studentEmail, SwingConstants.CENTER);
+                    label4.setBounds(x, y, 190, 50);
+                    label4.setFont(new Font("Arial", Font.PLAIN, 12));
+                    
+                    x += 200;
+
+                    JLabel label5 = new JLabel(roomAssignment, SwingConstants.CENTER);
+                    label5.setBounds(x, y, 130, 50);
+                    label5.setFont(new Font("Arial", Font.PLAIN, 12));
+                    
+                    
+                   
+                    borrow.add(label1);
+                    borrow.add(label2);
+                    borrow.add(label3);
+                    borrow.add(label4);
+                    borrow.add(label5);
+                    borrow.add(label6);
+                    
+                    
+                    dynamicLabels.add(label1);
+                    dynamicLabels.add(label2);
+                    dynamicLabels.add(label3);
+                    dynamicLabels.add(label4);
+                    dynamicLabels.add(label5);
+                    dynamicLabels.add(label6);
+                    
+                    y += 50;
+                    x = 30;
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            borrow.revalidate();
+            borrow.repaint();
+        };
+       
         blprev.addActionListener(e -> {
             dateRange[0] = dateRange[0].minusMonths(1).withDayOfMonth(1);                      
             dateRange[1] = dateRange[0].withDayOfMonth(dateRange[0].lengthOfMonth());          
             String range = dateRange[0].format(formatter) + " - " + dateRange[1].format(formatter);
             bdate.setText(range);
             storedDateRange[0] = range;  
+            fetchData.run();
         });
 
         brnext.addActionListener(e -> {
@@ -399,7 +530,10 @@ public class Main {
             String range = dateRange[0].format(formatter) + " - " + dateRange[1].format(formatter);
             bdate.setText(range);
             storedDateRange[0] = range;  
+            fetchData.run();
         });
+        
+        
         
         JPanel Maintenance = new JPanel();
         Maintenance.setBounds(280,90,920,670);
